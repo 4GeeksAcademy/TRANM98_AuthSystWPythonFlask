@@ -8,11 +8,14 @@ from api.utils import generate_sitemap, APIException
 api = Blueprint('api', __name__)
 
 
-@api.route('/hello', methods=['POST', 'GET'])
-def handle_hello():
+@api.route('/token', methods=['POST'])
+def login():
+    email = request.json.get("email", None)
+    password = request.json.get("password", None)
+    if email != "test" or "password" != "test":
+        return jsonify({'msg': 'Invalid'}), 401
+    
+    access_token = create_access_token(identity=email)
 
-    response_body = {
-        "message": "Hello! I'm a message that came from the backend, check the network tab on the google inspector and you will see the GET request"
-    }
 
     return jsonify(response_body), 200
